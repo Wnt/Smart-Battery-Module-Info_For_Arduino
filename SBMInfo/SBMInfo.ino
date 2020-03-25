@@ -73,6 +73,8 @@ void printSMBManufacturerInfo(void);
 void printSMBNonStandardInfo(bool aOnlyPrintIfValueChanged);
 void printSMBATRateInfo(void);
 
+void chargeEnable(void);
+
 bool checkForAttachedI2CDevice(uint8_t aI2CDeviceAddress);
 uint8_t scanForAttachedI2CDevice(void);
 
@@ -259,6 +261,10 @@ void setup() {
 
     Serial.println(F("\r\n*** CHANGED VALUES ***"));
     Serial.flush();
+
+    Serial.println(F("\r\n*** ENABLING CHARGING ***"));
+    Serial.flush();
+    chargeEnable();
 }
 
 void loop() {
@@ -827,4 +833,8 @@ void printSMBATRateInfo(void) {
     for (uint8_t i = 1; i < (sizeof(sSBMATRateFunctionDescriptionArray) / sizeof(SBMFunctionDescriptionStruct)); ++i) {
         readWordAndPrint(&sSBMATRateFunctionDescriptionArray[i], false);
     }
+}
+
+void chargeEnable(void) {
+    writeWord(BATTERY_MODE, CHARGE_CONTROLLER);
 }
